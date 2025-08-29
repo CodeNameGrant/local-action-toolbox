@@ -1,0 +1,23 @@
+name: 'Bootstrap Node Environment'
+description: 'Sets up Node.js and optionally installs npm dependencies'
+
+inputs:
+  installDeps:
+    description: "Whether to run 'npm ci' to install dependencies"
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    - name: Install dependencies
+      if: ${{ inputs.installDeps == 'true' }}
+      shell: bash
+      run: npm ci

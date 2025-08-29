@@ -1,0 +1,15 @@
+name: 'Reset Workspace Ownership'
+description: 'Ensures the workspace files are reset to the current user’s ownership'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Get Current User
+      id: current-user
+      shell: bash
+      run: echo "uid=$(id -u $USER)" >> $GITHUB_OUTPUT
+
+    - name: Reset Workspace Ownership
+      uses: peter-murray/reset-workspace-ownership-action@v1
+      with:
+        user_id: ${{ steps.current-user.outputs.uid }}

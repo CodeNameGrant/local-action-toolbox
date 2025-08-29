@@ -1,0 +1,23 @@
+name: 'Check License'
+description: 'Ensures that a required license key is available before continuing'
+author: 'Your Team'
+inputs:
+  license_key:
+    description: 'The license key to activate'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Validate License Key
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.license_key }}" ]; then
+          echo "❌ No license key provided. Please set LICENSE_KEY as a secret."
+          exit 1
+        fi
+
+        # Example: write license to a file or export env var
+        echo "Activating license..."
+        echo "${{ inputs.license_key }}" > $GITHUB_WORKSPACE/.license
+        echo "LICENSE_KEY=${{ inputs.license_key }}" >> $GITHUB_ENV
